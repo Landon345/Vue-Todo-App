@@ -6,7 +6,7 @@
 
 <img src="./vue-todo/src/assets/logo.png"
      alt="Markdown Monster icon"
-     height="500px" width="500px" />
+     height="200px" width="200px" />
 <img src="./vue-todo/src/assets/todo-app.png"
      alt="Markdown Monster icon"
       />
