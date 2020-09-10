@@ -2,8 +2,12 @@
   "lastRun": "1599662918228-todos.js",
   "migrations": [
     {
+      "title": "1599658337251-users.js",
+      "timestamp": 1599702486220
+    },
+    {
       "title": "1599662918228-todos.js",
-      "timestamp": 1599665751269
+      "timestamp": 1599702486230
     }
   ]
 }

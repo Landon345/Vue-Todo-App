@@ -3,9 +3,15 @@
     <ul class="todos__list">
       <li class="list-item" v-for="todo in todos" :key="todo.title">
         <div
-          :class="typeof todo.done != 'undefined' && todo.done ? 'todo-title-done' : 'todo-title'"
+          :class="
+            typeof todo.done != 'undefined' && todo.done
+              ? 'todo-title-done'
+              : 'todo-title'
+          "
           @click="markDone(todo)"
-        >{{todo.title}}</div>
+        >
+          {{ todo.title }}
+        </div>
         <button class="delete" @click="deleteIt(todo)">X</button>
       </li>
     </ul>
@@ -19,37 +25,29 @@ export default {
   name: "Todos",
   props: ["todos"],
   data() {
-    return {
-      //   todos: [],
-    };
-  },
-  created() {
-    this.$emit("fetch-todos");
+    return {};
   },
 
   methods: {
-    // async fetchTodos() {
-    //   this.todos = await getTodos();
-    // },
     async markDone(todo) {
-      const response = await putTodo({
-        id: todo.id,
+      await putTodo({
+        todo_id: todo.todo_id,
         title: todo.title,
         done: !todo.done,
       });
-      console.log(response);
+
       this.$emit("fetch-todos");
     },
     async deleteIt(todo) {
-      const response = await deleteTodo(todo.id);
-      console.log(response);
+      await deleteTodo(todo.todo_id);
+
       this.$emit("fetch-todos");
     },
   },
 };
 </script>
 
-<style  scoped>
+<style scoped>
 .todos {
   width: 100%;
 }

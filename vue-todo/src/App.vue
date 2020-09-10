@@ -1,128 +1,145 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <div class="app-title">TODO APP with Vue and Node</div>
-      <form class="form" @submit.prevent="onSubmit">
-        <input type="text" class="input" v-model="title" placeholder="todo..." />
-        <button
-          type="submit"
-          :class="title ? 'button' : 'button-disabled'"
-          :disabled="title ? false : true"
-        >Add</button>
-      </form>
-      <Todos @fetch-todos="fetchTodos" :todos="todos" />
-    </div>
-  </div>
+  <!-- <router-view> -->
+
+  <Navbar
+    @logged-in="loggedInUser"
+    @logout-user="logoutUser"
+    :loggedIn="loggedIn"
+  />
 </template>
 
 <script>
-import Todos from "./components/Todos";
-import { postTodo, getTodos } from "./Api";
-
+import Auth from "./Auth";
+import Navbar from "./components/Navbar";
 export default {
   name: "App",
   components: {
-    Todos,
+    Navbar,
   },
   data() {
     return {
-      title: "",
-      todos: [],
+      name: this.$route.name,
+      loggedIn: localStorage.getItem("api_token") ? true : false,
     };
   },
   methods: {
-    async onSubmit() {
-      console.log(this.title);
-      if (this.title) {
-        await postTodo({ title: this.title, done: false });
-      }
-      this.title = "";
-      this.fetchTodos();
+    loggedInUser() {
+      this.loggedIn = localStorage.getItem("api_token") ? true : false;
     },
-    async fetchTodos() {
-      console.log("fetched Todos");
-      this.todos = await getTodos();
+    async logoutUser() {
+      await Auth.Logout();
+      this.loggedIn = false;
+      this.$router.push("/login");
     },
   },
 };
 </script>
 
 <style>
-* {
-  margin: 0;
-}
 #app {
-  background-color: #f2f2f2;
-  min-height: 100vh;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-.container {
+#nav {
+  padding: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 20px;
+  font-size: 30px;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+
+.username {
+  padding: 10px 30px;
+  border: 1px solid #42b983;
+  margin: 10px;
+  outline: none;
+  font-size: 17px;
+  color: #42b983;
+}
+.password {
+  padding: 10px 30px;
+  border: 1px solid #42b983;
+  margin: 10px;
+  outline: none;
+  font-size: 17px;
+  color: #42b983;
+}
+.password-confirmation {
+  padding: 10px 30px;
+  border: 1px solid #42b983;
+  margin: 10px;
+  outline: none;
+  font-size: 17px;
+  color: #42b983;
+}
+
+.authform {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 100px;
-}
-.app-title {
-  padding: 20px;
-  color: white;
-  margin-bottom: 100px;
-  font-size: 60px;
-  background-color: rgba(0, 0, 0, 0.55);
-  border-radius: 10px;
-}
-.form {
-  display: flex;
-  width: 90%;
-  justify-content: center;
-  margin-bottom: 60px;
-}
-.input {
-  display: block;
-  flex: 0.85;
   width: 50%;
-  padding: 15px;
+  margin: auto;
+  margin-top: 100px;
+  justify-content: center;
+}
 
-  color: #313131;
-  font-size: 20px;
+.auth-submit {
+  padding: 20px;
+  margin: 10px;
+  font-size: 30px;
+  background-color: #fff;
+  color: #42b983;
   border: none;
-  outline: none;
-  background: none;
-
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 0px 16px 0px 16px;
-  transition: 0.4s;
+  border: 1px solid #42b983;
 }
-
-.input:focus {
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px 0px 16px 0px;
-}
-.button {
-  flex: 0.15;
+.auth-submit:hover {
+  background-color: #42b983;
+  color: white;
   cursor: pointer;
-  padding: 0px 60px;
-  background-color: #9393ff;
-  margin: 0px 10px;
-  border: none;
-  border-radius: 0px 16px 0px 16px;
-  outline: none;
-  font-size: 23px;
-  font-weight: 800;
-  color: white;
 }
-.button-disabled {
-  flex: 0.15;
-  padding: 0px 60px;
-  background-color: #9393aa;
-  margin: 0px 10px;
+
+.auth-submit-disabled {
+  padding: 20px;
+  margin: 10px;
+  font-size: 30px;
+  background-color: #ececec;
+  color: #42b983;
   border: none;
-  border-radius: 16px 0px 16px 0px;
-  outline: none;
-  font-size: 23px;
-  font-weight: 800;
+  border: 1px solid #555555;
+}
+
+.logout {
+  padding: 20px 50px;
+  margin: 10px;
+  font-size: 22px;
+  background-color: #429943;
   color: white;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+.logout:hover {
+  cursor: pointer;
+  padding: 20px 50px;
+  margin: 10px;
+  font-size: 22px;
+  background-color: #42b983;
+  color: #eee;
+  border-radius: 10px;
+  border: none;
+  outline: none;
 }
 </style>

@@ -4,11 +4,13 @@
   "description": "",
   "main": "Server.js",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "migrate": "^1.7.0",
     "nodemon": "^2.0.4",
-    "passport": "^0.4.1",
-    "pg": "^8.3.3"
+    "pg": "^8.3.3",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {},
   "scripts": {
